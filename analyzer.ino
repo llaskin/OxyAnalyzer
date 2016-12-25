@@ -97,38 +97,21 @@ int zeroPressureSensor(){
 }
 
 int analyzePreSensor(){
-    int16_t adc0=0;  //Pre-compression o2 sensor
-    //taking 20 samples. The sensor might spike for a millisecond. After we average the samples into one value
-     for(int i=0; i<=19; i++)
-       {
-         adc0=adc0+ads.readADC_SingleEnded(0);
-       }
-	return adc0;            
+	return readADC(0);            
 }
 
 int analyzePostSensor(){
-    int16_t adc1=0;  //Pre-compression o2 sensor
-    //taking 20 samples. The sensor might spike for a millisecond. After we average the samples into one value
-     for(int i=0; i<=19; i++)
-       {
-         adc1=adc1+ads.readADC_SingleEnded(1);
-       }
-	return adc1;            
+	return readADC(1);            
 }
 
 int analyzePressure(){
-    int16_t adc2=0;  //Pre-compression o2 sensor
-    //taking 20 samples. The sensor might spike for a millisecond. After we average the samples into one value
-     for(int i=0; i<=19; i++)
-       {
-         adc2=adc2+ads.readADC_SingleEnded(2);
-       }
-	return adc2;            
+	return readADC(2);            
 }
 
 void loop(void) {
   //********  Main Loop variable declaration *********** 
      double modr;//Variable to hold mod value in
+	int16_t adc0=0;  //Post-compression o2 sensor    
     int16_t adc1=0;  //Post-compression o2 sensor
     int16_t adc2=0;  //Pressure Sensor
     
