@@ -35,8 +35,6 @@ void setup(void)
   calibratePostCompressorSensor();
   zeroPressureSensor();
   
-  calibrationv=calibrate(); // Calibrate with a known percentage, and set to 20.9, 
-  							// as thats our known percentage
   
   
 
@@ -52,21 +50,22 @@ void setup(void)
 void need_calibrating(){
   display.clearDisplay();
   display.setCursor(0,0);
-  display.print("Sensor error");
-  display.print("Please");
-  display.print("calibrate"); 
-  display.print(calibrationv);
-  display.display();
+  display.println("Sensor error");
+  display.println("Please");
+  display.println("calibrate"); 
+  display.println(calibrationv);
   
 }
-
+int readADC(int adcChannel){
+	return ads.readADC_SingleEnded(adcChannel);
+}
 //Take 20 readings and avaraging it to exclude minor deviations of the reading
 int calibratePreCompressorSensor(){
   int16_t adc0=0;
   int result;
   for(int i=0; i<=19; i++)
        {
-         adc0=adc0+ads.readADC_SingleEnded(0);
+         adc0=adc0+readADC(0);
        }
   
   result=adc0/20;
@@ -78,7 +77,7 @@ int calibratePostCompressorSensor(){
   int result;
   for(int i=0; i<=19; i++)
        {
-         adc1=adc1+ads.readADC_SingleEnded(1);
+         adc1=adc1+readADC(1);
        }
   
   result=adc1/20;
@@ -90,7 +89,7 @@ int zeroPressureSensor(){
   int result;
   for(int i=0; i<=19; i++)
        {
-         adc2=adc2+ads.readADC_SingleEnded(2);
+         adc2=adc2+readADC(2);
        }
   
   result=adc2/20;
