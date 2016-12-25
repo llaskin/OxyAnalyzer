@@ -163,10 +163,10 @@ void loop(void) {
       display.clear();
       display.setCursor(0,0);
       display.print("O2%");
-      display.print(resultPre);
-      display.print(resultPost);      
-	  display.print(resultPressure);
-      delay(5000);
+      display.print("Pre: " + String(resultPre));
+      display.print("Post: " + String(resultPost));      
+	  display.print("Pressure: " + String(resultPressure));
+      delay(5000); //retest pressure and o2% every 5 seconds
       break;
 
    case 1:     
