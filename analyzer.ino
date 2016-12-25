@@ -162,7 +162,7 @@ void loop(void) {
       //Write to display
       display.clear();
       display.setCursor(0,0);
-      display.print("O2%");
+      display.print("O2% and Pressure");
       display.setCursor(0,1);
       display.print("Pre: " + String(resultPre));
       display.setCursor(0,2);
