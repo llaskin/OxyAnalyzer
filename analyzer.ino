@@ -107,7 +107,16 @@ int analyzePostSensor(){
 int analyzePressure(){
 	return readADC(2);            
 }
-
+int printAnalysisData(){
+      display.setCursor(0,0);
+      display.print("O2% and Pressure");
+      display.setCursor(0,1);
+      display.print("Pre: " + String(resultPre));
+      display.setCursor(0,2);
+      display.print("Post: " + String(resultPost));      
+      display.setCursor(0,3);
+	  display.print("Pressure: " + String(resultPressure));
+}
 void loop(void) {
   //********  Main Loop variable declaration *********** 
      double modr;//Variable to hold mod value in
@@ -143,14 +152,7 @@ void loop(void) {
       resultPressure = analyzePressure();
       //Write to display
       display.clear();
-      display.setCursor(0,0);
-      display.print("O2% and Pressure");
-      display.setCursor(0,1);
-      display.print("Pre: " + String(resultPre));
-      display.setCursor(0,2);
-      display.print("Post: " + String(resultPost));      
-      display.setCursor(0,3);
-	  display.print("Pressure: " + String(resultPressure));
+      printAnalysisData();
       delay(5000); //retest pressure and o2% every 5 seconds
       break;
 
