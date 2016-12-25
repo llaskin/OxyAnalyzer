@@ -69,6 +69,7 @@ int readADC(int adcChannel)
   return ads.readADC_SingleEnded(adcChannel);
 }
 //Calibrate a sensor
+////Take 20 readings and avarage it to exclude minor deviations of the reading
 int calibrateSensor(int sensorID)
 {
   int16_t adc = sensorID;
@@ -81,7 +82,7 @@ int calibrateSensor(int sensorID)
   result=adc / 20;
   return result;
 }
-//Take 20 readings and avaraging it to exclude minor deviations of the reading
+//Calibrate the sensor that is pre-compression
 int calibratePreCompressorSensor()
 {
   return calibrateSensor(0);
@@ -114,14 +115,10 @@ int analyzePressure()
 int printAnalysisData()
 {
   display.clear();
-  display.setCursor(0,0);
-  display.print("O2% and Pressure");
-  display.setCursor(0,1);
-  display.print("Pre: " + String(resultPre));
-  display.setCursor(0,2);
-  display.print("Post: " + String(resultPost));
-  display.setCursor(0,3);
-  display.print("Pressure: " + String(resultPressure));
+  display.println("O2% and Pressure");
+  display.println("Pre: " + String(resultPre));
+  display.println("Post: " + String(resultPost));
+  display.println("Pressure: " + String(resultPressure));
 }
 void loop(void)
 {
