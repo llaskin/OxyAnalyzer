@@ -33,7 +33,6 @@ void setup(void)
   calibratePreCompressorSensor();
   calibratePostCompressorSensor();
   zeroPressureSensor();
-
   checkCalibration();
 
 }
@@ -43,14 +42,14 @@ void checkCalibration()
   if ((calibrationPre > Sensor_highrange) || (calibrationPre < Sensor_lowrange))
   {
     sensorcheck=1;
-     current_function=1;//Sensor needs to be calibrated
-     need_calibrating("Pre");//print need calibrating message
+    current_function=1;//Sensor needs to be calibrated
+    need_calibrating("Pre");//print need calibrating message
    }
   if ( || (calibrationPost > Sensor_highrange) || (calibrationPost < Sensor_lowrange))
   {
     sensorcheck=1;
-     current_function=1;//Sensor needs to be calibrated
-     need_calibrating("Post");//print need calibrating message
+    current_function=1;//Sensor needs to be calibrated
+    need_calibrating("Post");//print need calibrating message
    }
 }
 //Prints need calibrating text
@@ -123,11 +122,6 @@ int printAnalysisData()
 void loop(void)
 {
   //********  Main Loop variable declaration ***********
-  double modr;//Variable to hold mod value in
-  int16_t adc0=0;  //Post-compression o2 sensor
-  int16_t adc1=0;  //Post-compression o2 sensor
-  int16_t adc2=0;  //Pressure Sensor
-
   double resultPre;//After calculations holds the current O2 percentage
   double resultPost;//After calculations holds the current O2 percentage
   double resultPressure;//After calculations holds the current O2 percentage
