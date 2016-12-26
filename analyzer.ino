@@ -2,7 +2,7 @@
 #include <Wire.h>
 #include <LiquidCrystal.h>
 
-Adafruit_ADS1015 ads1015;
+Adafruit_ADS1015 ads;
 LiquidCrystal display(12, 11, 5, 4, 3, 2);
 
 
@@ -15,11 +15,16 @@ int Sensor_lowrange=58;//When sensor is healthy and new it reads 58 on low
 int Sensor_highrange=106;//When sensor is healthy and new it reads 106 on high
 int current_function=0;
 
+double resultPre;//After calculations holds the current O2 percentage
+double resultPost;//After calculations holds the current O2 percentage
+double resultPressure;//After calculations holds the current O2 percentage
+
+
 void setup(void)
 {
   Serial.begin(9600);
-  pinMode(button1pin,INPUT);
-  pinMode(buzzer, OUTPUT); // Set buzzer - pin 9 as an output
+  pinMode(buttonPin,INPUT);
+  pinMode(buzzerPin, OUTPUT); // Set buzzer - pin 9 as an output
 
     //LCD Setup
   display.begin(20, 4);  //20 character, 4 line display
@@ -29,31 +34,28 @@ void setup(void)
   ads.setGain(GAIN_SIXTEEN);    // 16x gain  +/- 0.256V  1 bit = 0.125mV  0.0078125mV
   ads.begin();
 
-  display.print("Calibrating")
-  calibratePreCompressorSensor();
-  calibratePostCompressorSensor();
-  zeroPressureSensor();
-  checkCalibration();
+  display.print("Calibrating");
+  checkCalibration(calibratePreCompressorSensor(),   calibratePostCompressorSensor(), zeroPressureSensor());
 
 }
 //Checks calibration
-void checkCalibration()
+void checkCalibration(int calPre, int calPost, int calPress)
 {
-  if ((calibrationPre > Sensor_highrange) || (calibrationPre < Sensor_lowrange))
+  if ((calPre > Sensor_highrange) || (calPre < Sensor_lowrange))
   {
-    current_function=1;//Sensor needs to be calibrated
-    need_calibrating("Pre", calibrationPre);//print need calibrating message
+    current_function = 1;//Sensor needs to be calibrated
+    need_calibrating("Pre", calPre);//print need calibrating message
    }
-  if ((calibrationPost > Sensor_highrange) || (calibrationPost < Sensor_lowrange))
+  if ((calPost > Sensor_highrange) || (calPost < Sensor_lowrange))
   {
-    current_function=1;//Sensor needs to be calibrated
-    need_calibrating("Post", calibrationPost);//print need calibrating message
+    current_function = 1;//Sensor needs to be calibrated
+    need_calibrating("Post", calPost);//print need calibrating message
    }
 }
 //Prints need calibrating text
 void need_calibrating(String sensor, double calibrationValue)
 {
-  display.clearDisplay();
+  display.clear();
   display.setCursor(0,0);
   display.println("Sensor error");
   display.println("Please");
@@ -121,15 +123,12 @@ int printAnalysisData()
 void loop(void)
 {
   //********  Main Loop variable declaration ***********
-  double resultPre;//After calculations holds the current O2 percentage
-  double resultPost;//After calculations holds the current O2 percentage
-  double resultPressure;//After calculations holds the current O2 percentage
   double currentmvPre; //the current mv put out by the oxygen sensor;
   double currentmvPost; //the current mv put out by the oxygen sensor;
   double currentPressure; //the current mv put out by the oxygen sensor;
 
   //***** Function button read section ********
-  int button1state = digitalRead(button1pin);
+  int button1state = digitalRead(buttonPin);
   if(button1state == LOW)
   {
     if(current_function == 0)
@@ -158,17 +157,17 @@ void loop(void)
       display.display();
 
       current_function=0;//O2 analyzing
-      calibrationPre=calibratePreCompressorSensor();
-      calibrationPost=calibratePostCompressorSensor();
+      calibrationPre = calibratePreCompressorSensor();
+      calibrationPost = calibratePostCompressorSensor();
       calibrationPressure = calibratePressureSensor();
       delay(2000);
       checkCalibration();
       break;
 
     case 2:  //Error buzzer
-      tone(buzzer, 1000); // Send 1KHz sound signal...
+      tone(buzzerPin, 1000); // Send 1KHz sound signal...
       delay(1000);        // ...for 1 sec
-      noTone(buzzer);     // Stop sound...
+      noTone(buzzerPin);     // Stop sound...
       delay(1000);        // ...for 1sec
       break;
    }
