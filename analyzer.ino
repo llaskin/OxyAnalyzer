@@ -9,7 +9,6 @@ LiquidCrystal display(12, 11, 5, 4, 3, 2);
 int button1pin=3;//Calibration, Enter Button
 
 //General Calibration setup
-//double  calibrationv; //used to store calibrated value
 double calbrationPre, calibrationPost, calibrationPressure;
 int sensorcheck=0;//to check health on sensor. If value is 0 sensor works, if value is 1 sensor out of range or not connected
 int Sensor_lowrange=58;//When sensor is healthy and new it reads 58 on low
@@ -128,7 +127,6 @@ void loop(void)
   double currentmvPre; //the current mv put out by the oxygen sensor;
   double currentmvPost; //the current mv put out by the oxygen sensor;
   double currentPressure; //the current mv put out by the oxygen sensor;
-  double calibratev;
 
   //***** Function button read section ********
   int button1state = digitalRead(button1pin);
