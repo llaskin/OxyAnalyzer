@@ -41,14 +41,15 @@ void setup(void)
 //Checks calibration
 void checkCalibration(int calPre, int calPost, int calPress)
 {
+  delay(2000);
   if ((calPre > Sensor_highrange) || (calPre < Sensor_lowrange))
   {
-    current_function = 1;//Sensor needs to be calibrated
+    current_function=1;//Sensor needs to be calibrated
     need_calibrating("Pre", calPre);//print need calibrating message
    }
   if ((calPost > Sensor_highrange) || (calPost < Sensor_lowrange))
   {
-    current_function = 1;//Sensor needs to be calibrated
+    current_function=1;//Sensor needs to be calibrated
     need_calibrating("Post", calPost);//print need calibrating message
    }
 }
@@ -157,11 +158,7 @@ void loop(void)
       display.display();
 
       current_function=0;//O2 analyzing
-      calibrationPre = calibratePreCompressorSensor();
-      calibrationPost = calibratePostCompressorSensor();
-      calibrationPressure = calibratePressureSensor();
-      delay(2000);
-      checkCalibration();
+      checkCalibration(calibratePreCompressorSensor(),   calibratePostCompressorSensor(), zeroPressureSensor());
       break;
 
     case 2:  //Error buzzer
