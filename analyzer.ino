@@ -10,7 +10,6 @@ int button1pin=3;//Calibration, Enter Button
 
 //General Calibration setup
 double calbrationPre, calibrationPost, calibrationPressure;
-int sensorcheck=0;//to check health on sensor. If value is 0 sensor works, if value is 1 sensor out of range or not connected
 int Sensor_lowrange=58;//When sensor is healthy and new it reads 58 on low
 int Sensor_highrange=106;//When sensor is healthy and new it reads 106 on high
 int current_function=0;
@@ -40,13 +39,11 @@ void checkCalibration()
 {
   if ((calibrationPre > Sensor_highrange) || (calibrationPre < Sensor_lowrange))
   {
-    sensorcheck=1;
     current_function=1;//Sensor needs to be calibrated
     need_calibrating("Pre", calibrationPre);//print need calibrating message
    }
   if ((calibrationPost > Sensor_highrange) || (calibrationPost < Sensor_lowrange))
   {
-    sensorcheck=1;
     current_function=1;//Sensor needs to be calibrated
     need_calibrating("Post", calibrationPost);//print need calibrating message
    }
