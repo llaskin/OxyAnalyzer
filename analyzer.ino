@@ -44,7 +44,7 @@ void checkCalibration()
     current_function=1;//Sensor needs to be calibrated
     need_calibrating("Pre", calibrationPre);//print need calibrating message
    }
-  if ( || (calibrationPost > Sensor_highrange) || (calibrationPost < Sensor_lowrange))
+  if ((calibrationPost > Sensor_highrange) || (calibrationPost < Sensor_lowrange))
   {
     sensorcheck=1;
     current_function=1;//Sensor needs to be calibrated
