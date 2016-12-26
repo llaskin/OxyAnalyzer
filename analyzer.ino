@@ -43,24 +43,24 @@ void checkCalibration()
   {
     sensorcheck=1;
     current_function=1;//Sensor needs to be calibrated
-    need_calibrating("Pre");//print need calibrating message
+    need_calibrating("Pre", calibrationPre);//print need calibrating message
    }
   if ( || (calibrationPost > Sensor_highrange) || (calibrationPost < Sensor_lowrange))
   {
     sensorcheck=1;
     current_function=1;//Sensor needs to be calibrated
-    need_calibrating("Post");//print need calibrating message
+    need_calibrating("Post", calibrationPost);//print need calibrating message
    }
 }
 //Prints need calibrating text
-void need_calibrating(String sensor)
+void need_calibrating(String sensor, double calibrationValue)
 {
   display.clearDisplay();
   display.setCursor(0,0);
   display.println("Sensor error");
   display.println("Please");
   display.println("calibrate " + sensor);
-  display.println(calibrationv);
+  display.println(calibrationValue);
 
 }
 int readADC(int adcChannel)
@@ -143,10 +143,10 @@ void loop(void)
   switch(current_function)
   {
     case 0: //Analyze Gas
-      currentmvPre = analyzePreSensor()/20;
-      resultPre = (currentmvPre/calibrationv)*20.9;
-      currentmvPre = analyzePostSensor()/20;
-      resultPost = (currentmvPost/calibrationv)*20.9;
+      currentmvPre = analyzePreSensor();
+      resultPre = (currentmvPre/calbrationPre)*20.9;
+      currentmvPre = analyzePostSensor();
+      resultPost = (currentmvPost/calibrationPost)*20.9;
       resultPressure = analyzePressure();
       //Write to display
       display.clear();
