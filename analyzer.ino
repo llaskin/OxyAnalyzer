@@ -6,7 +6,8 @@ Adafruit_ADS1015 ads1015;
 LiquidCrystal display(12, 11, 5, 4, 3, 2);
 
 
-int button1pin=3;//Calibration, Enter Button
+const int buttonPin =3;//Calibration, Enter Button
+const int buzzerPin = 9; //buzzer to arduino pin 9
 
 //General Calibration setup
 double calbrationPre, calibrationPost, calibrationPressure;
@@ -18,6 +19,7 @@ void setup(void)
 {
   Serial.begin(9600);
   pinMode(button1pin,INPUT);
+  pinMode(buzzer, OUTPUT); // Set buzzer - pin 9 as an output
 
     //LCD Setup
   display.begin(20, 4);  //20 character, 4 line display
@@ -57,6 +59,7 @@ void need_calibrating(String sensor, double calibrationValue)
   display.println("Please");
   display.println("calibrate " + sensor);
   display.println(calibrationValue);
+  current_function = 2;
 
 }
 int readADC(int adcChannel)
@@ -160,6 +163,13 @@ void loop(void)
       calibrationPressure = calibratePressureSensor();
       delay(2000);
       checkCalibration();
+      break;
+
+    case 2:  //Error buzzer
+      tone(buzzer, 1000); // Send 1KHz sound signal...
+      delay(1000);        // ...for 1 sec
+      noTone(buzzer);     // Stop sound...
+      delay(1000);        // ...for 1sec
       break;
    }
 }
