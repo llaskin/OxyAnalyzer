@@ -41,7 +41,7 @@ void setup(void)
 //Checks calibration
 void checkCalibration(int calPre, int calPost, int calPress)
 {
-  delay(2000);
+  delay(10000);  //delay since JJ sensors take 6 seconds to calibrate
   if ((calPre > Sensor_highrange) || (calPre < Sensor_lowrange))
   {
     current_function=1;//Sensor needs to be calibrated
@@ -169,6 +169,3 @@ void loop(void)
       break;
    }
 }
-
-
-
