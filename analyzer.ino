@@ -52,6 +52,11 @@ void checkCalibration(int calPre, int calPost, int calPress)
     current_function=1;//Sensor needs to be calibrated
     need_calibrating("Post", calPost);//print need calibrating message
    }
+  if(calPress > 100)
+  {
+    current_function = 1;
+    need_calibrating("Pressure", calPress);
+  }
 }
 //Prints need calibrating text
 void need_calibrating(String sensor, double calibrationValue)
