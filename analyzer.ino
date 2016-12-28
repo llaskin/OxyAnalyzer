@@ -30,7 +30,7 @@ void setup(void)
   display.print("Analyzer V1");
 
   //starts ADS readings
-  ads.setGain(GAIN_SIXTEEN);    // 16x gain  +/- 0.256V  1 bit = 0.125mV  0.0078125mV
+  // ads.setGain(GAIN_SIXTEEN);    // 16x gain  +/- 0.256V  1 bit = 0.125mV  0.0078125mV
   ads.begin();
 
   display.print("Calibrating");
