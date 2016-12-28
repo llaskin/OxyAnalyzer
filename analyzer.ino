@@ -6,7 +6,6 @@ Adafruit_ADS1015 ads;
 LiquidCrystal display(12, 11, 5, 4, 3, 2);
 
 
-const int buttonPin =3;//Calibration, Enter Button
 const int buzzerPin = 9; //buzzer to arduino pin 9
 
 //General Calibration setup
@@ -28,12 +27,14 @@ void setup(void)
     //LCD Setup
   display.begin(20, 4);  //20 character, 4 line display
   display.print("Analyzer V1");
+  Serial.println("Analyzer V1");
 
   //starts ADS readings
   // ads.setGain(GAIN_SIXTEEN);    // 16x gain  +/- 0.256V  1 bit = 0.125mV  0.0078125mV
   ads.begin();
 
   display.print("Calibrating");
+  Serial.println("Calibrating");  
   checkCalibration(calibratePreCompressorSensor(),   calibratePostCompressorSensor(), zeroPressureSensor());
 
 }
@@ -63,9 +64,13 @@ void need_calibrating(String sensor, double calibrationValue)
   display.clear();
   display.setCursor(0,0);
   display.println("Sensor error");
+  Serial.println("Sensor error");
   display.println("Please");
+  Serial.println("Sensor error");
   display.println("calibrate " + sensor);
+  Serial.println("calibrate " + sensor);
   display.println(calibrationValue);
+  Serial.println(calibrationValue);
   current_function = 2;
 
 }
@@ -120,7 +125,7 @@ int analyzePressure()
 int printAnalysisData()
 {
   display.clear();
-  delay(1000);
+  delay(3000);
   display.setCursor(0, 0);
   display.print("O2% and Pressure");
   display.setCursor(0, 1);
@@ -157,7 +162,6 @@ void loop(void)
       resultPressure = analyzePressure();
       //Write to display
       printAnalysisData();
-      delay(5000); //retest pressure and o2% every 5 seconds
       break;
 
     case 1:  //Calibrate sensor
