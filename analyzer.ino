@@ -23,7 +23,6 @@ double resultPressure;//After calculations holds the current O2 percentage
 void setup(void)
 {
   Serial.begin(9600);
-  pinMode(buttonPin,INPUT);
   pinMode(buzzerPin, OUTPUT); // Set buzzer - pin 9 as an output
 
     //LCD Setup
@@ -121,38 +120,42 @@ int analyzePressure()
 int printAnalysisData()
 {
   display.clear();
-  display.println("O2% and Pressure");
-  display.println("Pre: " + String(resultPre));
-  display.println("Post: " + String(resultPost));
-  display.println("Pressure: " + String(resultPressure));
+  delay(1000);
+  display.setCursor(0, 0);
+  display.print("O2% and Pressure");
+  display.setCursor(0, 1);
+  display.print("Pre: " + String(resultPre));
+  display.setCursor(0, 2);
+  display.print("Post: " + String(resultPost));
+  display.setCursor(0, 3);
+  display.print("Pressure: " + String(resultPressure));
+  Serial.println("========");
+  Serial.println(currentmvPre);
+  Serial.println(calbrationPre);
+  Serial.println(currentmvPost);
+  Serial.println(calibrationPost);
+  Serial.println(resultPressure);
+  Serial.println("O2% and Pressure");
+  Serial.println("Pre: " + String(resultPre));
+  Serial.println("Post: " + String(resultPost));
+  Serial.println("Pressure: " + String(resultPressure));
 }
 void loop(void)
 {
   //********  Main Loop variable declaration ***********
-  double currentmvPre; //the current mv put out by the oxygen sensor;
-  double currentmvPost; //the current mv put out by the oxygen sensor;
-  double currentPressure; //the current mv put out by the oxygen sensor;
-
-  //***** Function button read section ********
-  int button1state = digitalRead(buttonPin);
-  if(button1state == LOW)
-  {
-    if(current_function == 0)
-    {
-      current_function = 1;//Sensor needs to be calibrated
-    }
-  }
+  double currentmvPre = 0.0; //the current mv put out by the oxygen sensor;
+  double currentmvPost = 0.0; //the current mv put out by the oxygen sensor;
+  double currentPressure = 0.0; //the current mv put out by the oxygen sensor;
 
   switch(current_function)
   {
     case 0: //Analyze Gas
       currentmvPre = analyzePreSensor();
       resultPre = (currentmvPre/calbrationPre)*20.9;
-      currentmvPre = analyzePostSensor();
+      currentmvPost = analyzePostSensor();
       resultPost = (currentmvPost/calibrationPost)*20.9;
       resultPressure = analyzePressure();
       //Write to display
-      display.clear();
       printAnalysisData();
       delay(5000); //retest pressure and o2% every 5 seconds
       break;
