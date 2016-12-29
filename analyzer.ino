@@ -26,6 +26,7 @@ void setup(void)
 
     //LCD Setup
   display.begin(20, 4);  //20 character, 4 line display
+  display.setCursor(0, 0);
   display.print("Analyzer V1");
   Serial.println("Analyzer V1");
 
@@ -33,6 +34,7 @@ void setup(void)
   // ads.setGain(GAIN_SIXTEEN);    // 16x gain  +/- 0.256V  1 bit = 0.125mV  0.0078125mV
   ads.begin();
 
+  display.setCursor(0, 1);
   display.print("Calibrating");
   Serial.println("Calibrating");  
   checkCalibration(calibratePreCompressorSensor(),   calibratePostCompressorSensor(), zeroPressureSensor());
@@ -42,34 +44,37 @@ void setup(void)
 void checkCalibration(int calPre, int calPost, int calPress)
 {
   delay(10000);  //delay since JJ sensors take 6 seconds to calibrate
-  if ((calPre > Sensor_highrange) || (calPre < Sensor_lowrange))
-  {
-    current_function=1;//Sensor needs to be calibrated
-    need_calibrating("Pre", calPre);//print need calibrating message
-   }
-  if ((calPost > Sensor_highrange) || (calPost < Sensor_lowrange))
-  {
-    current_function=1;//Sensor needs to be calibrated
-    need_calibrating("Post", calPost);//print need calibrating message
-   }
-  if(calPress > 100)
-  {
-    current_function = 1;
-    need_calibrating("Pressure", calPress);
-  }
+//  if ((calPre > Sensor_highrange) || (calPre < Sensor_lowrange))
+//  {
+//    current_function=1;//Sensor needs to be calibrated
+//    need_calibrating("Pre", calPre);//print need calibrating message
+//   }
+//  if ((calPost > Sensor_highrange) || (calPost < Sensor_lowrange))
+//  {
+//    current_function=1;//Sensor needs to be calibrated
+//    need_calibrating("Post", calPost);//print need calibrating message
+//   }
+//  if(calPress > 100)
+//  {
+//    current_function = 1;
+//    need_calibrating("Pressure", calPress);
+//  }
 }
 //Prints need calibrating text
 void need_calibrating(String sensor, double calibrationValue)
 {
   display.clear();
   display.setCursor(0,0);
-  display.println("Sensor error");
+  display.print("Sensor error");
   Serial.println("Sensor error");
-  display.println("Please");
+  display.setCursor(0, 1);
+  display.print("Please");
   Serial.println("Sensor error");
-  display.println("calibrate " + sensor);
+  display.setCursor(0, 2);
+  display.print("calibrate " + sensor);
   Serial.println("calibrate " + sensor);
-  display.println(calibrationValue);
+  display.setCursor(0, 3);
+  display.print(calibrationValue);
   Serial.println(calibrationValue);
   current_function = 2;
 
@@ -134,12 +139,6 @@ int printAnalysisData()
   display.print("Post: " + String(resultPost));
   display.setCursor(0, 3);
   display.print("Pressure: " + String(resultPressure));
-  Serial.println("========");
-  Serial.println(currentmvPre);
-  Serial.println(calbrationPre);
-  Serial.println(currentmvPost);
-  Serial.println(calibrationPost);
-  Serial.println(resultPressure);
   Serial.println("O2% and Pressure");
   Serial.println("Pre: " + String(resultPre));
   Serial.println("Post: " + String(resultPost));
@@ -160,14 +159,20 @@ void loop(void)
       currentmvPost = analyzePostSensor();
       resultPost = (currentmvPost/calibrationPost)*20.9;
       resultPressure = analyzePressure();
+      Serial.println("========");
+      Serial.println(currentmvPre);
+      Serial.println(calbrationPre);
+      Serial.println(currentmvPost);
+      Serial.println(calibrationPost);
+      Serial.println(resultPressure);
       //Write to display
       printAnalysisData();
       break;
 
     case 1:  //Calibrate sensor
       display.clear();
-      display.println("Calibrating");
-      display.display();
+      display.setCursor(0, 0);
+      display.print("Calibrating");
 
       current_function=0;//O2 analyzing
       checkCalibration(calibratePreCompressorSensor(),   calibratePostCompressorSensor(), zeroPressureSensor());
